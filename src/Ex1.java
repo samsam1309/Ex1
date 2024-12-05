@@ -1,3 +1,4 @@
+
 /**
  * This class represents a simple solution for Ex1.
  * As defined here: https://docs.google.com/document/d/1AJ9wtnL1qdEs4DAKqBlO1bXCM6r6GJ_J/r/edit/edit
@@ -20,39 +21,51 @@ public class Ex1 {
      * @return the decimal value of the number or -1 if invalid
      */
     public static int number2Int(String str) {
-        // Checks if the string is null or empty
-        if (str == null || str.isEmpty()) {
-            return -1;
+        if (str == null || str.isEmpty() || !str.contains("b")) {
+            return -1; // Format invalide
         }
 
-        // Checks if the string is in a valid format using the isNumber function
-        if (!isNumber(str)) {
-            return -1; // Returns -1 if the string is invalid
-        }
-
-        // Splits the string into two parts: number and base
+        // Divise la chaîne en deux parties : nombre et base
         String[] parts = str.split("b");
-        String numberPart = parts[0]; // Part before 'b' (the number)
-        String basePart = parts[1];   // Part after 'b' (the base)
+        if (parts.length != 2 || parts[0].isEmpty() || parts[1].isEmpty()) {
+            return -1; // Format invalide
+        }
 
-        // Converts the base to an integer
+        String numberPart = parts[0].toUpperCase(); // Convertit en majuscules pour gérer les lettres
         int base;
         try {
-            base = Integer.parseInt(basePart);
+            base = Integer.parseInt(parts[1]);
             if (base < 2 || base > 16) {
-                return -1; // If the base is out of range, return -1
+                return -1; // Base hors limites
             }
         } catch (NumberFormatException e) {
-            return -1; // If the base is not a valid integer, return -1
+            return -1; // Base invalide
         }
 
-        // Converts the number to base 10
+        // Vérifie et convertit le nombre
+        int result = 0;
         try {
-            return Integer.parseInt(numberPart, base); // Uses Integer.parseInt with the specified base
-        } catch (NumberFormatException e) {
-            return -1; // If the number is invalid, return -1
+            for (char c : numberPart.toCharArray()) {
+                int digitValue;
+                if (Character.isDigit(c)) {
+                    digitValue = c - '0'; // Valeur numérique des chiffres
+                } else if (c >= 'A' && c <= 'F') {
+                    digitValue = c - 'A' + 10; // Valeur numérique des lettres
+                } else {
+                    return -1; // Caractère invalide
+                }
+                if (digitValue >= base) {
+                    return -1; // Chiffre invalide pour la base
+                }
+                result = result * base + digitValue; // Conversion progressive
+            }
+        } catch (Exception e) {
+            return -1; // En cas d'erreur inattendue
         }
+
+        return result;
     }
+
 
     /**
      * This static function checks if the given String (a) is in a valid "number" format.
@@ -62,33 +75,38 @@ public class Ex1 {
      */
     public static boolean isNumber(String str) {
         if (str == null || str.isEmpty() || !str.contains("b")) {
-            return false;
+            return false; // Format invalide
         }
 
         String[] parts = str.split("b");
         if (parts.length != 2 || parts[0].isEmpty() || parts[1].isEmpty()) {
-            return false; // If the format is invalid
+            return false; // Format invalide
         }
 
-        // Checks if the base is valid
+        String numberPart = parts[0].toUpperCase();
+        int base;
         try {
-            int base = Integer.parseInt(parts[1]);
+            base = Integer.parseInt(parts[1]);
             if (base < 2 || base > 16) {
-                return false; // Base out of range
+                return false; // Base hors limites
             }
         } catch (NumberFormatException e) {
-            return false; // Invalid base
+            return false; // Base invalide
         }
 
-        // Checks if the number is valid for the base
-        try {
-            Integer.parseInt(parts[0], Integer.parseInt(parts[1]));
-        } catch (NumberFormatException e) {
-            return false; // Invalid number
+        for (char c : numberPart.toCharArray()) {
+            if (Character.isDigit(c)) {
+                if (c - '0' >= base) return false; // Chiffre hors limites
+            } else if (c >= 'A' && c <= 'F') {
+                if (c - 'A' + 10 >= base) return false; // Lettre hors limites
+            } else {
+                return false; // Caractère invalide
+            }
         }
 
-        return true; // Everything is valid
+        return true;
     }
+
 
     /**
      * Calculate the number representation (in the specified base)
@@ -100,16 +118,21 @@ public class Ex1 {
      * @return a String representing the number in the given base or "" if invalid
      */
     public static String int2Number(int num, int base) {
-        // Add your code here
-        if (base < 2 || base > 16 || num < 0) {
-            return "";
+        if (num < 0 || base < 2 || base > 16) {
+            return ""; // Entrée invalide
         }
 
-        // Converts the number to the specified base
-        String numberInBase = Integer.toString(num, base).toUpperCase();
+        StringBuilder result = new StringBuilder();
+        while (num > 0) {
+            int remainder = num % base;
+            char digit = (char) (remainder < 10 ? '0' + remainder : 'A' + (remainder - 10));
+            result.insert(0, digit);
+            num /= base;
+        }
 
-        return numberInBase;
+        return result.length() > 0 ? result.toString() : "0"; // Gère le cas où num = 0
     }
+
 
     /**
      * Checks if the two numbers have the same value.
@@ -131,20 +154,19 @@ public class Ex1 {
      * @return the index of the largest number (by value)
      */
     public static int maxIndex(String[] arr) {
-        int maxValue = -1; // Initial maximum value
-        int maxIndex = -1; // Index of the maximum
+        int maxValue = -1; // Initialise à une valeur invalid
+        int maxIndex = -1;
 
         for (int i = 0; i < arr.length; i++) {
-            int value = number2Int(arr[i]); // Convert each number to base 10
-
-            // If the value is valid and greater than the current maximum
-            if (value != -1 && value > maxValue) {
-                maxValue = value;  // Update the maximum value
-                maxIndex = i;      // Update the index of the maximum
+            int value = number2Int(arr[i]);
+            if (value > maxValue) {
+                maxValue = value;
+                maxIndex = i;
             }
         }
 
-        return maxIndex; // Return the index of the largest number
+        return maxIndex;
     }
+
 
 }

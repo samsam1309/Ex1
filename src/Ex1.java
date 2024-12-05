@@ -74,38 +74,53 @@ public class Ex1 {
      * @return true if the given String is in a valid number format
      */
     public static boolean isNumber(String str) {
+        // Vérifie si la chaîne est nulle ou vide ou si elle ne contient pas de "b"
         if (str == null || str.isEmpty() || !str.contains("b")) {
             return false; // Format invalide
         }
 
+        // Divise la chaîne en deux parties : la partie avant "b" et celle après
         String[] parts = str.split("b");
+
+        // Si la chaîne ne contient pas exactement une "b" ou si une des parties est vide
         if (parts.length != 2 || parts[0].isEmpty() || parts[1].isEmpty()) {
             return false; // Format invalide
         }
 
+        // La première partie est le nombre en format base-n (base avant "b")
         String numberPart = parts[0].toUpperCase();
+
+        // La seconde partie est la base
         int base;
         try {
-            base = Integer.parseInt(parts[1]);
+            base = Integer.parseInt(parts[1]); // On tente de convertir la base en entier
             if (base < 2 || base > 16) {
-                return false; // Base hors limites
+                return false; // La base doit être entre 2 et 16
             }
         } catch (NumberFormatException e) {
-            return false; // Base invalide
+            return false; // La base n'est pas un nombre valide
         }
 
+        // Vérifie si chaque caractère dans la partie du nombre est valide dans la base donnée
         for (char c : numberPart.toCharArray()) {
+            // Si le caractère est un chiffre
             if (Character.isDigit(c)) {
-                if (c - '0' >= base) return false; // Chiffre hors limites
-            } else if (c >= 'A' && c <= 'F') {
-                if (c - 'A' + 10 >= base) return false; // Lettre hors limites
-            } else {
+                if (c - '0' >= base) return false; // Le chiffre est trop grand pour la base
+            }
+            // Si le caractère est une lettre entre A et F
+            else if (c >= 'A' && c <= 'F') {
+                if (c - 'A' + 10 >= base) return false; // La lettre est trop grande pour la base
+            }
+            // Si le caractère n'est ni un chiffre ni une lettre valide
+            else {
                 return false; // Caractère invalide
             }
         }
 
+        // Si toutes les vérifications passent, la chaîne est un nombre valide
         return true;
     }
+
 
 
     /**

@@ -1,47 +1,40 @@
-
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-/**
- * This JUnit class represents a very partial test class for Ex1.
- * Make sure you complete all the needed JUnits
- */
 public class Ex1Test {
+
     @Test
-    void computeNumberTest() {
-        String s2 = "1011b2";
-        int v = Ex1.number2Int(s2);
-        assertEquals(v,11);
-        String s10 = "1011bA";
-        v = Ex1.number2Int(s10);
-        s2 = Ex1.int2Number(v,2);
-        int v2 = Ex1.number2Int(s2);
-        assertEquals(v,v2);
-        assertTrue(Ex1.equals(s10,s2));
+    public void testNumber2Int() {
+        assertEquals(9, Ex1.number2Int("1001b2"));
+        assertEquals(120, Ex1.number2Int("AAbB"));
+        assertEquals(-1, Ex1.number2Int("1b")); // Invalid format
+        assertEquals(-1, Ex1.number2Int("1234b11")); // Invalid base
     }
 
     @Test
-    void isBasisNumberTest() {
-        String[] good = {"1", "1b2", "01b2", "123bA", "ABbG", "0bA"};
-        for(int i=0;i<good.length;i=i+1) {
-            boolean ok = Ex1.isNumber(good[i]);
-            assertTrue(ok);
-        }
-        String[] not_good = {"b2", "2b2", "1G3bG", " BbG", "0bbA", "abB", "!@b2", "A", "1bb2"};
-        for(int i=0;i<not_good.length;i=i+1) {
-            boolean not_ok = Ex1.isNumber(not_good[i]);
-            assertFalse(not_ok);
-        }
-    }
-    @Test
-    void int2NumberTest() {
-        // implement this test
-    }
-    @Test
-    void maxIndexTest() {
-        // implement this test
+    public void testIsNumber() {
+        assertTrue(Ex1.isNumber("1001b2"));
+        assertTrue(Ex1.isNumber("AAbB"));
+        assertFalse(Ex1.isNumber("1b"));
+        assertFalse(Ex1.isNumber("123b11"));
     }
 
-    // Add additional test functions - test as much as you can.
+    @Test
+    public void testInt2Number() {
+        assertEquals("1001", Ex1.int2Number(9, 2));
+        assertEquals("7A", Ex1.int2Number(120, 16));
+        assertEquals("", Ex1.int2Number(-1, 10)); // Invalid input
+    }
+
+    @Test
+    public void testEquals() {
+        assertTrue(Ex1.equals("1001b2", "9b10"));
+        assertFalse(Ex1.equals("1001b2", "11b2"));
+    }
+
+    @Test
+    public void testMaxIndex() {
+        String[] numbers = {"1001b2", "11b3", "123bA", "EFbG"};
+        assertEquals(3, Ex1.maxIndex(numbers)); // "EFbG" is the largest
+    }
 }

@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Ex1Main {
-
+    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String num1 = "", num2 = "", quit = "quit";
@@ -54,12 +54,13 @@ public class Ex1Main {
             System.out.println("Do you want to enter more numbers? (yes/no)");
             String continueInput = sc.next();
             if (continueInput.equalsIgnoreCase("no")) {
-                break;
+                break; // Sortir de la boucle
             }
         }
 
         // Exemple d'utilisation de la fonction maxIndex sur un tableau d'entrées
         System.out.println("\nEnter a list of numbers in the format NUMBERbBASE (separated by space) to find the largest number's index, or \"quit\" to exit:");
+        sc.nextLine(); // Consommer le retour à la ligne restant
         String inputList = sc.nextLine(); // Lire toute la ligne (par exemple "123b10 456b2 89b16")
 
         if (!inputList.equals("quit")) {

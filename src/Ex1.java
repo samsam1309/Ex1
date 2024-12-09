@@ -25,46 +25,54 @@ public class Ex1 {
             return -1; // Format invalide
         }
 
-        // Divise la chaîne en deux parties : nombre et base
         String[] parts = str.split("b");
         if (parts.length != 2 || parts[0].isEmpty() || parts[1].isEmpty()) {
             return -1; // Format invalide
         }
 
-        String numberPart = parts[0].toUpperCase(); // Convertit en majuscules pour gérer les lettres
+        String numberPart = parts[0].toUpperCase();
+        String basePart = parts[1].toUpperCase();
         int base;
+
         try {
-            base = Integer.parseInt(parts[1]);
-            if (base < 2 || base > 16) {
+            // Si la base est une lettre (A-G), convertit en valeur numérique
+            if (basePart.length() == 1 && basePart.charAt(0) >= 'A' && basePart.charAt(0) <= 'G') {
+                base = basePart.charAt(0) - 'A' + 10; // A=10, B=11, ..., G=16
+            } else {
+                base = Integer.parseInt(basePart); // Sinon, traite comme un entier
+            }
+
+            if (base < 2 || base > 17) {
                 return -1; // Base hors limites
             }
         } catch (NumberFormatException e) {
             return -1; // Base invalide
         }
 
-        // Vérifie et convertit le nombre
         int result = 0;
         try {
             for (char c : numberPart.toCharArray()) {
                 int digitValue;
                 if (Character.isDigit(c)) {
-                    digitValue = c - '0'; // Valeur numérique des chiffres
+                    digitValue = c - '0';
                 } else if (c >= 'A' && c <= 'F') {
-                    digitValue = c - 'A' + 10; // Valeur numérique des lettres
+                    digitValue = c - 'A' + 10;
                 } else {
                     return -1; // Caractère invalide
                 }
+
                 if (digitValue >= base) {
                     return -1; // Chiffre invalide pour la base
                 }
-                result = result * base + digitValue; // Conversion progressive
+                result = result * base + digitValue;
             }
         } catch (Exception e) {
-            return -1; // En cas d'erreur inattendue
+            return -1;
         }
 
         return result;
     }
+
 
 
     /**
@@ -74,52 +82,46 @@ public class Ex1 {
      * @return true if the given String is in a valid number format
      */
     public static boolean isNumber(String str) {
-        // Vérifie si la chaîne est nulle ou vide ou si elle ne contient pas de "b"
         if (str == null || str.isEmpty() || !str.contains("b")) {
-            return false; // Format invalide
+            return false;
         }
 
-        // Divise la chaîne en deux parties : la partie avant "b" et celle après
         String[] parts = str.split("b");
-
-        // Si la chaîne ne contient pas exactement une "b" ou si une des parties est vide
         if (parts.length != 2 || parts[0].isEmpty() || parts[1].isEmpty()) {
-            return false; // Format invalide
+            return false;
         }
 
-        // La première partie est le nombre en format base-n (base avant "b")
         String numberPart = parts[0].toUpperCase();
-
-        // La seconde partie est la base
+        String basePart = parts[1].toUpperCase();
         int base;
+
         try {
-            base = Integer.parseInt(parts[1]); // On tente de convertir la base en entier
+            if (basePart.length() == 1 && basePart.charAt(0) >= 'A' && basePart.charAt(0) <= 'G') {
+                base = basePart.charAt(0) - 'A' + 10; // A=10, B=11, ..., G=16
+            } else {
+                base = Integer.parseInt(basePart);
+            }
+
             if (base < 2 || base > 16) {
-                return false; // La base doit être entre 2 et 16
+                return false;
             }
         } catch (NumberFormatException e) {
-            return false; // La base n'est pas un nombre valide
+            return false;
         }
 
-        // Vérifie si chaque caractère dans la partie du nombre est valide dans la base donnée
         for (char c : numberPart.toCharArray()) {
-            // Si le caractère est un chiffre
             if (Character.isDigit(c)) {
-                if (c - '0' >= base) return false; // Le chiffre est trop grand pour la base
-            }
-            // Si le caractère est une lettre entre A et F
-            else if (c >= 'A' && c <= 'F') {
-                if (c - 'A' + 10 >= base) return false; // La lettre est trop grande pour la base
-            }
-            // Si le caractère n'est ni un chiffre ni une lettre valide
-            else {
-                return false; // Caractère invalide
+                if (c - '0' >= base) return false;
+            } else if (c >= 'A' && c <= 'F') {
+                if (c - 'A' + 10 >= base) return false;
+            } else {
+                return false;
             }
         }
 
-        // Si toutes les vérifications passent, la chaîne est un nombre valide
         return true;
     }
+
 
 
 
@@ -134,7 +136,7 @@ public class Ex1 {
      */
     public static String int2Number(int num, int base) {
         if (num < 0 || base < 2 || base > 16) {
-            return ""; // Entrée invalide
+            return "";
         }
 
         StringBuilder result = new StringBuilder();
@@ -145,8 +147,9 @@ public class Ex1 {
             num /= base;
         }
 
-        return result.length() > 0 ? result.toString() : "0"; // Gère le cas où num = 0
+        return result.length() > 0 ? result.toString() : "0";
     }
+
 
 
     /**

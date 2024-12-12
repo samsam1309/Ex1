@@ -1,4 +1,5 @@
 import java.util.Scanner;
+
 public class Ex1Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -7,74 +8,76 @@ public class Ex1Main {
         System.out.println("Ex1 class solution:");
 
         while (true) {
-            // Ask the user to input the first number
-            System.out.println("\nEnter a string as number#1 (NUMBERbBASE) (or \"quit\" to end the program): ");
+            // Demander le premier nombre
+            System.out.println("\nEnter a string as number#1 (NUMBERbBASE) or a decimal number (or \"quit\" to end the program): ");
             num1 = sc.next();
+            if (num1.equals(quit)) break;
 
-            if (num1.equals(quit)) {
-                break; // Exit if the user enters "quit"
-            }
+            // Vérifier la validité et afficher le résultat en base 10
+            boolean isValid1 = Ex1.isNumber(num1);
+            int number1 = isValid1 ? Ex1.number2Int(num1) : (Ex1.isDecimalNumber(num1) ? Integer.parseInt(num1) : -1);
 
-            // Ask the user to input the second number
-            System.out.println("Enter a string as number#2 (NUMBERbBASE) (or \"quit\" to end the program): ");
-            num2 = sc.next();
-
-            if (num2.equals(quit)) {
-                break; // Exit if the user enters "quit"
-            }
-
-            // Convert the numbers to integers
-            int number1 = Ex1.number2Int(num1);
-            int number2 = Ex1.number2Int(num2);
-
-            // Check if the conversions are valid
-            if (number1 != -1 && number2 != -1) {
-                System.out.println("Number 1 (" + num1 + ") in decimal: " + number1);
-                System.out.println("Number 2 (" + num2 + ") in decimal: " + number2);
-
-                // Check if the two numbers are equal
-                if (Ex1.equals(num1, num2)) {
-                    System.out.println("The numbers are equal!");
-                } else {
-                    System.out.println("The numbers are NOT equal!");
-                }
-
-                // Display the conversions in other bases
-                System.out.println("Number 1 (" + num1 + ") in base 2: " + Ex1.int2Number(number1, 2));
-                System.out.println("Number 1 (" + num1 + ") in base 16: " + Ex1.int2Number(number1, 16));
-                System.out.println("Number 2 (" + num2 + ") in base 2: " + Ex1.int2Number(number2, 2));
-                System.out.println("Number 2 (" + num2 + ") in base 16: " + Ex1.int2Number(number2, 16));
+            System.out.println("Your Number " + num1 + " is valid: " + (number1 != -1));
+            if (number1 != -1) {
+                System.out.println("In decimal: " + number1);
             } else {
-                System.out.println("Invalid input! One or both numbers could not be converted.");
+                System.out.println("Invalid number format for number 1.");
+                continue;
             }
 
-            // Ask if the user wants to continue or not
+            // Demander le deuxième nombre
+            System.out.println("Enter a string as number#2 (NUMBERbBASE) or a decimal number (or \"quit\" to end the program): ");
+            num2 = sc.next();
+            if (num2.equals(quit)) break;
+
+            // Vérifier la validité et afficher le résultat en base 10
+            boolean isValid2 = Ex1.isNumber(num2);
+            int number2 = isValid2 ? Ex1.number2Int(num2) : (Ex1.isDecimalNumber(num2) ? Integer.parseInt(num2) : -1);
+
+            System.out.println("Your Number " + num2 + " is valid: " + (number2 != -1));
+            if (number2 != -1) {
+                System.out.println("In decimal: " + number2);
+            } else {
+                System.out.println("Invalid number format for number 2.");
+                continue;
+            }
+
+            // Demander la base dans laquelle afficher les résultats
+            System.out.println("Enter the base (between 2 and 16) for the results: ");
+            int base = sc.nextInt();
+
+            // Vérifier si la base est valide
+            if (base < 2 || base > 16) {
+                System.out.println("Invalid base! Please enter a base between 2 and 16.");
+                continue;
+            }
+
+            // Calculer la somme et le produit dans la base demandée
+            int sum = number1 + number2;
+            int product = number1 * number2;
+
+            System.out.println("Sum in base " + base + ": " + Ex1.int2Number(sum, base));
+            System.out.println("Product in base " + base + ": " + Ex1.int2Number(product, base));
+
+            // Trouver l'indice du maximum entre les 4 valeurs
+            String[] numbers = {
+                    String.valueOf(number1),
+                    String.valueOf(number2),
+                    String.valueOf(sum),
+                    String.valueOf(product)
+            };
+            int maxIndex = Ex1.maxIndex(numbers);
+
+            System.out.println("The index of the largest number among the four values is: " + maxIndex);
+
+            // Demander si l'utilisateur veut entrer d'autres nombres
             System.out.println("Do you want to enter more numbers? (yes/no)");
             String continueInput = sc.next();
             if (continueInput.equalsIgnoreCase("no")) {
-                break; // Exit the loop
+                break;
             }
         }
 
-        // Example of using the maxIndex function on a list of inputs
-        System.out.println("\nEnter a list of numbers in the format NUMBERbBASE (separated by space) to find the largest number's index, or \"quit\" to exit:");
-        sc.nextLine(); // Consume the leftover newline
-        String inputList = sc.nextLine(); // Read the entire line (e.g., "123b10 456b2 89b16")
-
-        if (!inputList.equals("quit") && !inputList.isEmpty()) {
-            String[] numbersArray = inputList.split(" "); // Split the numbers by space
-            int maxIndex = Ex1.maxIndex(numbersArray); // Use the maxIndex function
-
-            if (maxIndex != -1) {
-                System.out.println("The index of the largest number is: " + maxIndex);
-            } else {
-                System.out.println("No valid numbers were found.");
-            }
-        } else {
-            System.out.println("No valid input for the list.");
-        }
-
-        // Close the scanner
         System.out.println("Quitting now...");
         sc.close();
     }

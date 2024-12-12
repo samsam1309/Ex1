@@ -12,7 +12,6 @@
  * You should implement the following static functions:
  */
 public class Ex1 {
-
     /**
      * Convert the given number (num) to a decimal representation (as int).
      * If the given number is not in a valid format, return -1.
@@ -22,12 +21,12 @@ public class Ex1 {
      */
     public static int number2Int(String str) {
         if (str == null || str.isEmpty() || !str.contains("b")) {
-            return -1; // Format invalide
+            return -1; // Invalid format
         }
 
         String[] parts = str.split("b");
         if (parts.length != 2 || parts[0].isEmpty() || parts[1].isEmpty()) {
-            return -1; // Format invalide
+            return -1; // Invalid format
         }
 
         String numberPart = parts[0].toUpperCase();
@@ -35,20 +34,20 @@ public class Ex1 {
         int base;
 
         try {
-            // Convertit la base de caractère à valeur numérique (A-G = 10-16)
+            // Convert the base character to its numeric value (A-G = 10-16)
             base = convertBase(basePart);
             if (base < 2 || base > 16) {
-                return -1; // Base invalide
+                return -1; // Invalid base
             }
         } catch (NumberFormatException e) {
-            return -1; // Base invalide
+            return -1; // Invalid base
         }
 
         int result = 0;
         for (char c : numberPart.toCharArray()) {
             int digitValue = getDigitValue(c);
             if (digitValue == -1 || digitValue >= base) {
-                return -1; // Caractère invalide ou chiffre trop grand pour la base
+                return -1; // Invalid character or digit too large for base
             }
             result = result * base + digitValue;
         }
@@ -56,23 +55,23 @@ public class Ex1 {
         return result;
     }
 
-    // Fonction auxiliaire pour convertir la base
+    // Helper function to convert the base
     private static int convertBase(String basePart) {
         if (basePart.length() == 1 && basePart.charAt(0) >= 'A' && basePart.charAt(0) <= 'G') {
             return basePart.charAt(0) - 'A' + 10; // A=10, B=11, ..., G=16
         } else {
-            return Integer.parseInt(basePart); // Traite comme un entier
+            return Integer.parseInt(basePart); // Treat as an integer
         }
     }
 
-    // Fonction pour obtenir la valeur numérique d'un caractère
+    // Function to get the numeric value of a character
     private static int getDigitValue(char c) {
         if (Character.isDigit(c)) {
             return c - '0';
         } else if (c >= 'A' && c <= 'F') {
             return c - 'A' + 10;
         } else {
-            return -1; // Caractère invalide
+            return -1; // Invalid character
         }
     }
 
@@ -100,16 +99,16 @@ public class Ex1 {
         try {
             base = convertBase(basePart);
             if (base < 2 || base > 16) {
-                return false; // Base invalide
+                return false; // Invalid base
             }
         } catch (NumberFormatException e) {
-            return false; // Base invalide
+            return false; // Invalid base
         }
 
         for (char c : numberPart.toCharArray()) {
             int digitValue = getDigitValue(c);
             if (digitValue == -1 || digitValue >= base) {
-                return false; // Caractère invalide ou chiffre trop grand pour la base
+                return false; // Invalid character or digit too large for base
             }
         }
 
@@ -128,7 +127,7 @@ public class Ex1 {
      */
     public static String int2Number(int num, int base) {
         if (num < 0 || base < 2 || base > 16) {
-            return ""; // Valeur invalide
+            return ""; // Invalid value
         }
 
         StringBuilder result = new StringBuilder();
@@ -153,7 +152,7 @@ public class Ex1 {
     public static boolean equals(String n1, String n2) {
         int value1 = number2Int(n1);
         int value2 = number2Int(n2);
-        return value1 != -1 && value1 == value2; // Si l'un des nombres est invalide, on retourne false
+        return value1 != -1 && value1 == value2; // If one number is invalid, return false
     }
 
     /**
@@ -165,7 +164,7 @@ public class Ex1 {
      * @return the index of the largest number (by value)
      */
     public static int maxIndex(String[] arr) {
-        int maxValue = -1; // Initialise à une valeur invalide
+        int maxValue = -1; // Initialize with an invalid value
         int maxIndex = -1;
 
         for (int i = 0; i < arr.length; i++) {

@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 public class Ex1Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -8,39 +7,39 @@ public class Ex1Main {
         System.out.println("Ex1 class solution:");
 
         while (true) {
-            // Demander à l'utilisateur de saisir le premier nombre
+            // Ask the user to input the first number
             System.out.println("\nEnter a string as number#1 (NUMBERbBASE) (or \"quit\" to end the program): ");
             num1 = sc.next();
 
             if (num1.equals(quit)) {
-                break; // Quitter si l'utilisateur entre "quit"
+                break; // Exit if the user enters "quit"
             }
 
-            // Demander à l'utilisateur de saisir le deuxième nombre
+            // Ask the user to input the second number
             System.out.println("Enter a string as number#2 (NUMBERbBASE) (or \"quit\" to end the program): ");
             num2 = sc.next();
 
             if (num2.equals(quit)) {
-                break; // Quitter si l'utilisateur entre "quit"
+                break; // Exit if the user enters "quit"
             }
 
-            // Conversion des numéros en entier
+            // Convert the numbers to integers
             int number1 = Ex1.number2Int(num1);
             int number2 = Ex1.number2Int(num2);
 
-            // Vérifier si les conversions sont valides
+            // Check if the conversions are valid
             if (number1 != -1 && number2 != -1) {
                 System.out.println("Number 1 (" + num1 + ") in decimal: " + number1);
                 System.out.println("Number 2 (" + num2 + ") in decimal: " + number2);
 
-                // Vérification de l'égalité des deux nombres
+                // Check if the two numbers are equal
                 if (Ex1.equals(num1, num2)) {
                     System.out.println("The numbers are equal!");
                 } else {
                     System.out.println("The numbers are NOT equal!");
                 }
 
-                // Affichage des conversions dans d'autres bases
+                // Display the conversions in other bases
                 System.out.println("Number 1 (" + num1 + ") in base 2: " + Ex1.int2Number(number1, 2));
                 System.out.println("Number 1 (" + num1 + ") in base 16: " + Ex1.int2Number(number1, 16));
                 System.out.println("Number 2 (" + num2 + ") in base 2: " + Ex1.int2Number(number2, 2));
@@ -49,22 +48,22 @@ public class Ex1Main {
                 System.out.println("Invalid input! One or both numbers could not be converted.");
             }
 
-            // Demander si l'utilisateur souhaite continuer ou non
+            // Ask if the user wants to continue or not
             System.out.println("Do you want to enter more numbers? (yes/no)");
             String continueInput = sc.next();
             if (continueInput.equalsIgnoreCase("no")) {
-                break; // Sortir de la boucle
+                break; // Exit the loop
             }
         }
 
-        // Exemple d'utilisation de la fonction maxIndex sur un tableau d'entrées
+        // Example of using the maxIndex function on a list of inputs
         System.out.println("\nEnter a list of numbers in the format NUMBERbBASE (separated by space) to find the largest number's index, or \"quit\" to exit:");
-        sc.nextLine(); // Consommer le retour à la ligne restant
-        String inputList = sc.nextLine(); // Lire toute la ligne (par exemple "123b10 456b2 89b16")
+        sc.nextLine(); // Consume the leftover newline
+        String inputList = sc.nextLine(); // Read the entire line (e.g., "123b10 456b2 89b16")
 
         if (!inputList.equals("quit") && !inputList.isEmpty()) {
-            String[] numbersArray = inputList.split(" "); // Diviser les nombres par espace
-            int maxIndex = Ex1.maxIndex(numbersArray); // Utiliser la fonction maxIndex
+            String[] numbersArray = inputList.split(" "); // Split the numbers by space
+            int maxIndex = Ex1.maxIndex(numbersArray); // Use the maxIndex function
 
             if (maxIndex != -1) {
                 System.out.println("The index of the largest number is: " + maxIndex);
@@ -75,7 +74,7 @@ public class Ex1Main {
             System.out.println("No valid input for the list.");
         }
 
-        // Fermeture du scanner
+        // Close the scanner
         System.out.println("Quitting now...");
         sc.close();
     }

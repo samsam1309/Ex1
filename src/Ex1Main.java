@@ -8,12 +8,12 @@ public class Ex1Main {
         System.out.println("Ex1 class solution:");
 
         while (true) {
-            // Demander le premier nombre
+            // Ask for the first number
             System.out.println("\nEnter a string as number#1 (NUMBERbBASE) or a decimal number (or \"quit\" to end the program): ");
             num1 = sc.next();
             if (num1.equals(quit)) break;
 
-            // Vérifier la validité et afficher le résultat en base 10
+            // Validate and display the result in decimal
             boolean isValid1 = Ex1.isNumber(num1);
             int number1 = isValid1 ? Ex1.number2Int(num1) : (Ex1.isDecimalNumber(num1) ? Integer.parseInt(num1) : -1);
 
@@ -25,12 +25,12 @@ public class Ex1Main {
                 continue;
             }
 
-            // Demander le deuxième nombre
+            // Ask for the second number
             System.out.println("Enter a string as number#2 (NUMBERbBASE) or a decimal number (or \"quit\" to end the program): ");
             num2 = sc.next();
             if (num2.equals(quit)) break;
 
-            // Vérifier la validité et afficher le résultat en base 10
+            // Validate and display the result in decimal
             boolean isValid2 = Ex1.isNumber(num2);
             int number2 = isValid2 ? Ex1.number2Int(num2) : (Ex1.isDecimalNumber(num2) ? Integer.parseInt(num2) : -1);
 
@@ -42,24 +42,24 @@ public class Ex1Main {
                 continue;
             }
 
-            // Demander la base dans laquelle afficher les résultats
+            // Ask for the base to display the results in
             System.out.println("Enter the base (between 2 and 16) for the results: ");
             int base = sc.nextInt();
 
-            // Vérifier si la base est valide
+            // Check if the base is valid
             if (base < 2 || base > 16) {
                 System.out.println("Invalid base! Please enter a base between 2 and 16.");
                 continue;
             }
 
-            // Calculer la somme et le produit dans la base demandée
+            // Calculate the sum and product in the specified base
             int sum = number1 + number2;
             int product = number1 * number2;
 
-            System.out.println("Sum in base " + base + ": " + Ex1.int2Number(sum, base));
-            System.out.println("Product in base " + base + ": " + Ex1.int2Number(product, base));
+            System.out.println("Sum in base " + base + ": " + Ex1.int2Number(sum, base) + "b" + base);
+            System.out.println("Product in base " + base + ": " + Ex1.int2Number(product, base) + "b" + base);
 
-            // Trouver l'indice du maximum entre les 4 valeurs
+            // Find the index of the maximum value among the four values
             String[] numbers = {
                     String.valueOf(number1),
                     String.valueOf(number2),
@@ -70,7 +70,7 @@ public class Ex1Main {
 
             System.out.println("The index of the largest number among the four values is: " + maxIndex);
 
-            // Demander si l'utilisateur veut entrer d'autres nombres
+            // Ask if the user wants to input more numbers
             System.out.println("Do you want to enter more numbers? (yes/no)");
             String continueInput = sc.next();
             if (continueInput.equalsIgnoreCase("no")) {

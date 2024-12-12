@@ -35,44 +35,46 @@ public class Ex1 {
         int base;
 
         try {
-            // Si la base est une lettre (A-G), convertit en valeur numérique
-            if (basePart.length() == 1 && basePart.charAt(0) >= 'A' && basePart.charAt(0) <= 'G') {
-                base = basePart.charAt(0) - 'A' + 10; // A=10, B=11, ..., G=16
-            } else {
-                base = Integer.parseInt(basePart); // Sinon, traite comme un entier
-            }
-
-            if (base < 2 || base > 17) {
-                return -1; // Base hors limites
+            // Convertit la base de caractère à valeur numérique (A-G = 10-16)
+            base = convertBase(basePart);
+            if (base < 2 || base > 16) {
+                return -1; // Base invalide
             }
         } catch (NumberFormatException e) {
             return -1; // Base invalide
         }
 
         int result = 0;
-        try {
-            for (char c : numberPart.toCharArray()) {
-                int digitValue;
-                if (Character.isDigit(c)) {
-                    digitValue = c - '0';
-                } else if (c >= 'A' && c <= 'F') {
-                    digitValue = c - 'A' + 10;
-                } else {
-                    return -1; // Caractère invalide
-                }
-
-                if (digitValue >= base) {
-                    return -1; // Chiffre invalide pour la base
-                }
-                result = result * base + digitValue;
+        for (char c : numberPart.toCharArray()) {
+            int digitValue = getDigitValue(c);
+            if (digitValue == -1 || digitValue >= base) {
+                return -1; // Caractère invalide ou chiffre trop grand pour la base
             }
-        } catch (Exception e) {
-            return -1;
+            result = result * base + digitValue;
         }
 
         return result;
     }
 
+    // Fonction auxiliaire pour convertir la base
+    private static int convertBase(String basePart) {
+        if (basePart.length() == 1 && basePart.charAt(0) >= 'A' && basePart.charAt(0) <= 'G') {
+            return basePart.charAt(0) - 'A' + 10; // A=10, B=11, ..., G=16
+        } else {
+            return Integer.parseInt(basePart); // Traite comme un entier
+        }
+    }
+
+    // Fonction pour obtenir la valeur numérique d'un caractère
+    private static int getDigitValue(char c) {
+        if (Character.isDigit(c)) {
+            return c - '0';
+        } else if (c >= 'A' && c <= 'F') {
+            return c - 'A' + 10;
+        } else {
+            return -1; // Caractère invalide
+        }
+    }
 
 
     /**
@@ -96,33 +98,23 @@ public class Ex1 {
         int base;
 
         try {
-            if (basePart.length() == 1 && basePart.charAt(0) >= 'A' && basePart.charAt(0) <= 'G') {
-                base = basePart.charAt(0) - 'A' + 10; // A=10, B=11, ..., G=16
-            } else {
-                base = Integer.parseInt(basePart);
-            }
-
+            base = convertBase(basePart);
             if (base < 2 || base > 16) {
-                return false;
+                return false; // Base invalide
             }
         } catch (NumberFormatException e) {
-            return false;
+            return false; // Base invalide
         }
 
         for (char c : numberPart.toCharArray()) {
-            if (Character.isDigit(c)) {
-                if (c - '0' >= base) return false;
-            } else if (c >= 'A' && c <= 'F') {
-                if (c - 'A' + 10 >= base) return false;
-            } else {
-                return false;
+            int digitValue = getDigitValue(c);
+            if (digitValue == -1 || digitValue >= base) {
+                return false; // Caractère invalide ou chiffre trop grand pour la base
             }
         }
 
         return true;
     }
-
-
 
 
     /**
@@ -136,20 +128,19 @@ public class Ex1 {
      */
     public static String int2Number(int num, int base) {
         if (num < 0 || base < 2 || base > 16) {
-            return "";
+            return ""; // Valeur invalide
         }
 
         StringBuilder result = new StringBuilder();
-        while (num > 0) {
+        do {
             int remainder = num % base;
-            char digit = (char) (remainder < 10 ? '0' + remainder : 'A' + (remainder - 10));
+            char digit = (remainder < 10) ? (char) ('0' + remainder) : (char) ('A' + (remainder - 10));
             result.insert(0, digit);
             num /= base;
-        }
+        } while (num > 0);
 
         return result.length() > 0 ? result.toString() : "0";
     }
-
 
 
     /**
@@ -160,7 +151,9 @@ public class Ex1 {
      * @return true if the two numbers have the same values
      */
     public static boolean equals(String n1, String n2) {
-        return number2Int(n1) == number2Int(n2);
+        int value1 = number2Int(n1);
+        int value2 = number2Int(n2);
+        return value1 != -1 && value1 == value2; // Si l'un des nombres est invalide, on retourne false
     }
 
     /**
@@ -172,7 +165,7 @@ public class Ex1 {
      * @return the index of the largest number (by value)
      */
     public static int maxIndex(String[] arr) {
-        int maxValue = -1; // Initialise à une valeur invalid
+        int maxValue = -1; // Initialise à une valeur invalide
         int maxIndex = -1;
 
         for (int i = 0; i < arr.length; i++) {
@@ -185,6 +178,4 @@ public class Ex1 {
 
         return maxIndex;
     }
-
-
 }

@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class Ex1Main {
-    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String num1 = "", num2 = "", quit = "quit";
@@ -63,7 +62,7 @@ public class Ex1Main {
         sc.nextLine(); // Consommer le retour à la ligne restant
         String inputList = sc.nextLine(); // Lire toute la ligne (par exemple "123b10 456b2 89b16")
 
-        if (!inputList.equals("quit")) {
+        if (!inputList.equals("quit") && !inputList.isEmpty()) {
             String[] numbersArray = inputList.split(" "); // Diviser les nombres par espace
             int maxIndex = Ex1.maxIndex(numbersArray); // Utiliser la fonction maxIndex
 
@@ -72,6 +71,8 @@ public class Ex1Main {
             } else {
                 System.out.println("No valid numbers were found.");
             }
+        } else {
+            System.out.println("No valid input for the list.");
         }
 
         // Fermeture du scanner
